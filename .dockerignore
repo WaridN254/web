@@ -1,0 +1,58 @@
+# ── Git ──────────────────────────────────────
+.git
+.gitignore
+.gitattributes
+
+# ── Environment / IDE ───────────────────────
+.env
+.env.backup
+.env.production
+.env.local
+.editorconfig
+.phpactor.json
+.phpunit.result.cache
+.phpunit.cache
+/.fleet
+/.idea
+/.nova
+/.vscode
+/.zed
+
+# ── Dependencies (reinstalled in Docker) ────
+/node_modules
+/vendor
+
+# ── Build output (rebuilt in Docker) ────────
+/public/build
+/public/hot
+
+# ── Storage (ephemeral on Render) ───────────
+/storage/logs/*
+/storage/framework/cache/data/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+!/storage/logs/.gitkeep
+!/storage/framework/cache/.gitkeep
+!/storage/framework/sessions/.gitkeep
+!/storage/framework/views/.gitkeep
+
+# ── Tests ───────────────────────────────────
+/tests
+phpunit.xml
+
+# ── Dev / utility scripts ──────────────────
+check_branches.php
+check_dupes.php
+fix_navigation.php
+fix_translations.php
+
+# ── Documentation ──────────────────────────
+README.md
+
+# ── OS / misc ──────────────────────────────
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+auth.json
+docker-compose*.yml
