@@ -90,10 +90,11 @@ RUN mkdir -p \
 # Expose the port Render will use (Render sets $PORT, default 10000)
 EXPOSE 10000
 
-# Start command: cache config/routes, create storage link, then serve
+# Start command: cache config/routes, run migrations, create storage link, then serve
 # View cache is built at startup (needs .env to resolve themes/panels)
 CMD php artisan config:cache && \
     php artisan route:cache && \
     php artisan view:cache && \
+    php artisan migrate --force && \
     php artisan storage:link --force 2>/dev/null; \
     php artisan serve --host=0.0.0.0 --port=${PORT:-10000}

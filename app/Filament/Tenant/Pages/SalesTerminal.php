@@ -1459,7 +1459,7 @@ class SalesTerminal extends Page
 
     private function ensureSession(string $tenantId, string|int $userId): object
     {
-        $session = DB::table('sessions')
+        $session = DB::table('pos_sessions')
             ->where('tenant_id', $tenantId)
             ->where('user_id', $userId)
             ->where('status', 'open')
@@ -1474,7 +1474,7 @@ class SalesTerminal extends Page
         $sessionId = (string) Str::uuid();
         $branchId = app(\App\Services\BranchService::class)->getActiveBranchId();
 
-        DB::table('sessions')->insert([
+        DB::table('pos_sessions')->insert([
             'id' => $sessionId,
             'user_id' => $userId,
             'tenant_id' => $tenantId,
@@ -2018,7 +2018,7 @@ class SalesTerminal extends Page
         $shortage = $actualCash - $data['expectedCash'];
 
         try {
-            DB::table('sessions')->where('id', $data['session']->id)->update([
+            DB::table('pos_sessions')->where('id', $data['session']->id)->update([
                 'closed_at' => now(),
                 'expected_cash' => $data['expectedCash'],
                 'actual_cash' => $actualCash,
