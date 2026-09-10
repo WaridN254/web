@@ -65,11 +65,17 @@ COPY . .
 # Copy built frontend assets from Stage 1
 COPY --from=assets /build/public/build public/build
 
-# Remove dev/local files that shouldn't be in the image
-RUN rm -f .env
+# Create minimal .env for build-time artisan commands (package:discover)
+RUN echo "APP_KEY=base64:dGVzdGtleWZvcmJ1aWxkdGltZQ==" > .env && \
+    echo "DB_CONNECTION=pgsql" >> .env && \
+    echo "CACHE_STORE=array" >> .env && \
+    echo "SESSION_DRIVER=array" >> .env
 
 # Generate optimized autoloader and run package discovery
 RUN composer dump-autoload --optimize --no-dev
+
+# Remove the build-time .env (Render will provide the real one)
+RUN rm -f .env
 
 # Create required Laravel directories and set permissions
 RUN mkdir -p \
