@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'title' => 'Barua pepe',
+    'inbox' => 'Kikasha',
+    'sent' => 'Imetumwa',
+    'drafts' => 'Rasimu',
+    'junk' => 'Taka',
+    'trash' => 'Jokofu',
+    'all_mail' => 'Barua zote',
+    'compose' => 'Andika barua',
+    'reply' => 'Jibu',
+    'reply_all' => 'Jibu wote',
+    'forward' => 'Peleka',
+    'delete' => 'Futa',
+    'archive' => 'Hifadhi',
+    'mark_as_read' => 'Weka alama imesomwa',
+    'mark_as_unread' => 'Weka alama haijasomwa',
+    'no_messages' => 'Hakuna barua',
+    'accounts' => 'Akaunti za barua pepe',
+    'labels' => 'Lebo',
+    'templates' => 'Violezo',
+    'unread' => 'Haijasomwa',
+    'read' => 'Imesomwa',
+];

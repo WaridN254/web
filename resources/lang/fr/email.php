@@ -1,0 +1,26 @@
+<?php
+
+return [
+    'title' => 'Email',
+    'inbox' => 'Boite de reception',
+    'sent' => 'Envoyes',
+    'drafts' => 'Brouillons',
+    'junk' => 'Indesirables',
+    'trash' => 'Corbeille',
+    'all_mail' => 'Tous les messages',
+    'compose' => 'Nouveau message',
+    'reply' => 'Repondre',
+    'reply_all' => 'Repondre a tous',
+    'forward' => 'Transferer',
+    'delete' => 'Supprimer',
+    'archive' => 'Archiver',
+    'mark_as_read' => 'Marquer comme lu',
+    'mark_as_unread' => 'Marquer comme non lu',
+    'no_messages' => 'Aucun message',
+    'accounts' => 'Comptes email',
+    'inbox' => 'Boite de reception',
+    'labels' => 'Etiquettes',
+    'templates' => 'Modeles',
+    'unread' => 'Non lu',
+    'read' => 'Lu',
+];
