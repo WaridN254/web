@@ -14,7 +14,11 @@ class PlatformMailProvider extends ServiceProvider
 
     public function boot(): void
     {
-        $this->configureMailer();
+        try {
+            $this->configureMailer();
+        } catch (\Throwable) {
+            // Silently fallback if database is not available/migrated yet
+        }
     }
 
     private function configureMailer(): void

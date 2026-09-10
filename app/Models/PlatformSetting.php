@@ -25,14 +25,18 @@ class PlatformSetting extends Model
 
     public static function get(string $key, mixed $default = null): mixed
     {
-        $setting = static::where('key', $key)->first();
-        if (!$setting) return $default;
-        return match ($setting->type) {
-            'boolean' => (bool) $setting->value,
-            'integer' => (int) $setting->value,
-            'json' => json_decode($setting->value, true),
-            default => $setting->value,
-        };
+        try {
+            $setting = static::where('key', $key)->first();
+            if (!$setting) return $default;
+            return match ($setting->type) {
+                'boolean' => (bool) $setting->value,
+                'integer' => (int) $setting->value,
+                'json' => json_decode($setting->value, true),
+                default => $setting->value,
+            };
+        } catch (\Throwable) {
+            return $default;
+        }
     }
 
     public static function set(string $key, mixed $value, string $type = 'text'): static
@@ -48,15 +52,27 @@ class PlatformSetting extends Model
 
     public static function getMany(array $keys): array
     {
-        $settings = static::whereIn('key', $keys)->get()->keyBy('key');
-        $result = [];
-        foreach ($keys as $key => $default) {
-            if (is_int($key)) {
-                $result[$default] = $settings->get($default)?->value ?? null;
-            } else {
-                $result[$key] = $settings->get($key)?->value ?? $default;
+        try {
+            $settings = static::whereIn('key', $keys)->get()->keyBy('key');
+            $result = [];
+            foreach ($keys as $key => $default) {
+                if (is_int($key)) {
+                    $result[$default] = $settings->get($default)?->value ?? null;
+                } else {
+                    $result[$key] = $settings->get($key)?->value ?? $default;
+                }
             }
+            return $result;
+        } catch (\Throwable) {
+            $result = [];
+            foreach ($keys as $key => $default) {
+                if (is_int($key)) {
+                    $result[$default] = null;
+                } else {
+                    $result[$key] = $default;
+                }
+            }
+            return $result;
         }
-        return $result;
     }
 }
