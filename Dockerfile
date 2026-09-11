@@ -91,10 +91,10 @@ RUN mkdir -p \
 EXPOSE 10000
 
 # Start command: cache config/routes, run migrations, create storage link, then serve
-# View cache is built at startup (needs .env to resolve themes/panels)
-CMD php artisan config:cache && \
-    php artisan route:cache && \
-    php artisan view:cache && \
-    php artisan migrate --force && \
+# Use ; (not &&) so server starts even if cache/migrate fails
+CMD php artisan config:cache 2>&1; \
+    php artisan route:cache 2>&1; \
+    php artisan view:cache 2>&1; \
+    php artisan migrate --force 2>&1; \
     php artisan storage:link --force 2>/dev/null; \
-    php artisan serve --host=0.0.0.0 --port=${PORT:-10000}
+    exec php artisan serve --host=0.0.0.0 --port=${PORT:-10000}
