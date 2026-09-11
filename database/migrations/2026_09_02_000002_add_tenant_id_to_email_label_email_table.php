@@ -15,10 +15,13 @@ return new class extends Migration
             }
         });
 
-        DB::table('email_label_email')
-            ->join('emails', 'email_label_email.email_id', '=', 'emails.id')
-            ->whereNull('email_label_email.tenant_id')
-            ->update(['email_label_email.tenant_id' => DB::raw('emails.tenant_id')]);
+        DB::statement('
+            UPDATE email_label_email
+            SET tenant_id = emails.tenant_id
+            FROM emails
+            WHERE email_label_email.email_id = emails.id
+            AND email_label_email.tenant_id IS NULL
+        ');
 
         Schema::table('email_label_email', function (Blueprint $table) {
             $table->uuid('tenant_id')->nullable(false)->change();

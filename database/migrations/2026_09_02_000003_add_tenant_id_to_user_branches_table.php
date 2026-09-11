@@ -15,10 +15,13 @@ return new class extends Migration
             }
         });
 
-        DB::table('user_branches')
-            ->join('branches', 'user_branches.branch_id', '=', 'branches.id')
-            ->whereNull('user_branches.tenant_id')
-            ->update(['user_branches.tenant_id' => DB::raw('branches.tenant_id')]);
+        DB::statement('
+            UPDATE user_branches
+            SET tenant_id = branches.tenant_id
+            FROM branches
+            WHERE user_branches.branch_id = branches.id
+            AND user_branches.tenant_id IS NULL
+        ');
 
         Schema::table('user_branches', function (Blueprint $table) {
             $table->uuid('tenant_id')->nullable(false)->change();
