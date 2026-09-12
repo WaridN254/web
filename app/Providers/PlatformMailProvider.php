@@ -23,6 +23,22 @@ class PlatformMailProvider extends ServiceProvider
 
     private function configureMailer(): void
     {
+        // Env var RESEND_KEY takes highest priority — always use Resend if set
+        $envResendKey = env('RESEND_KEY');
+        if (!empty($envResendKey)) {
+            config([
+                'mail.default' => 'resend',
+                'services.resend.key' => $envResendKey,
+            ]);
+
+            $fromAddress = config('MAIL_FROM_ADDRESS') ?: config('mail.from.address');
+            $fromName = config('MAIL_FROM_NAME') ?: config('mail.from.name');
+            if ($fromAddress) {
+                config(['mail.from' => ['address' => $fromAddress, 'name' => $fromName]]);
+            }
+            return;
+        }
+
         if (!class_exists(PlatformSetting::class)) {
             return;
         }
