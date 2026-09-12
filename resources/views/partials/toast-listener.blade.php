@@ -1,5 +1,8 @@
 <script>
     (function () {
+        if (window.__toastListenerRegistered) return;
+        window.__toastListenerRegistered = true;
+
         function registerToastListener() {
             if (!window.Livewire) return false;
 
