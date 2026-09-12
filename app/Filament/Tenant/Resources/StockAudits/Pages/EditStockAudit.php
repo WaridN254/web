@@ -59,7 +59,7 @@ class EditStockAudit extends EditRecord
                         'end_date' => $now,
                     ]);
 
-                    $this->dispatch('toast', ['type' => 'success', 'title' => 'Inventory Audit Finalized successfully!']);
+                    $this$this->dispatch('gooey-toast', ['type' => 'success', 'title' => 'Inventory Audit Finalized successfully!']);
                         
                     return redirect(\App\Filament\Tenant\Resources\StockAudits\StockAuditResource::getUrl('index'));
                 }),
@@ -71,7 +71,7 @@ class EditStockAudit extends EditRecord
 
     protected function getSavedNotification(): ?\Filament\Notifications\Notification
     {
-        $this->dispatch('toast', ['type' => 'success', 'title' => 'Saved successfully']);
+        $this$this->dispatch('gooey-toast', ['type' => 'success', 'title' => 'Saved successfully']);
         return null;
     }
 }

@@ -47,18 +47,18 @@ class ViewPurchaseOrder extends ViewRecord
 
         $item = $this->record->items()->where('product_id', $productId)->first();
         if (!$item) {
-            $this->dispatch('toast', ['type' => 'warning', 'title' => 'Product not in this order', 'description' => $product->name]);
+            $this$this->dispatch('gooey-toast', ['type' => 'warning', 'title' => 'Product not in this order', 'description' => $product->name]);
             return;
         }
 
         $remaining = floatval($item->quantity) - floatval($item->received_quantity);
         if ($remaining <= 0) {
-            $this->dispatch('toast', ['type' => 'warning', 'title' => 'Already fully received', 'description' => $product->name]);
+            $this$this->dispatch('gooey-toast', ['type' => 'warning', 'title' => 'Already fully received', 'description' => $product->name]);
             return;
         }
 
         $item->increment('received_quantity');
-        $this->dispatch('toast', ['type' => 'success', 'title' => 'Received +1', 'description' => $product->name]);
+        $this$this->dispatch('gooey-toast', ['type' => 'success', 'title' => 'Received +1', 'description' => $product->name]);
     }
 
     public function infolist(Schema $schema): Schema
@@ -396,7 +396,7 @@ class ViewPurchaseOrder extends ViewRecord
                     Cache::forget("tenant:{$tenantId}:widget_revenue");
                     Cache::forget("tenant:{$tenantId}:widget_sales_dashboard");
 
-                    $this->dispatch('toast', ['type' => 'success', 'title' => 'Stock received successfully']);
+                    $this$this->dispatch('gooey-toast', ['type' => 'success', 'title' => 'Stock received successfully']);
 
                     $this->redirect(PurchaseOrderResource::getUrl('view', ['record' => $this->record]));
                 }),
@@ -464,7 +464,7 @@ class ViewPurchaseOrder extends ViewRecord
 
                     $this->record->recalculatePayments();
 
-                    $this->dispatch('toast', ['type' => 'success', 'title' => 'Payment recorded successfully']);
+                    $this$this->dispatch('gooey-toast', ['type' => 'success', 'title' => 'Payment recorded successfully']);
 
                     $this->redirect(PurchaseOrderResource::getUrl('view', ['record' => $this->record]));
                 }),

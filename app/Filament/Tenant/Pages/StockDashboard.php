@@ -43,7 +43,7 @@ class StockDashboard extends Page implements HasTable
         if (!$product) return;
 
         $this->selectedProductId = $productId;
-        $this->dispatch('toast', ['type' => 'success', 'title' => 'Product found', 'description' => $product->name . ' — Stock: ' . $product->stock_quantity]);
+        $this$this->dispatch('gooey-toast', ['type' => 'success', 'title' => 'Product found', 'description' => $product->name . ' — Stock: ' . $product->stock_quantity]);
     }
 
 
@@ -131,7 +131,7 @@ class StockDashboard extends Page implements HasTable
                         'movement_date' => now(),
                     ]);
                     
-                    $this->dispatch('toast', [
+                    $this$this->dispatch('gooey-toast', [
                         'type' => 'success',
                         'title' => 'Stock returned successfully',
                     ]);
@@ -168,7 +168,7 @@ class StockDashboard extends Page implements HasTable
                         'movement_date' => now(),
                     ]);
 
-                    $this->dispatch('toast', [
+                    $this$this->dispatch('gooey-toast', [
                         'type' => 'success',
                         'title' => 'Stock added successfully',
                     ]);

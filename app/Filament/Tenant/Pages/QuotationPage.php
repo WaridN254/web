@@ -401,7 +401,7 @@ class QuotationPage extends Page implements HasTable
                         ->action(function ($record, array $data) {
                             $this->updateQuotation($record, $data);
 
-                            $this->dispatch('toast', [
+                            $this$this->dispatch('gooey-toast', [
                                 'type' => 'success',
                                 'title' => 'Quotation updated successfully',
                             ]);
@@ -417,7 +417,7 @@ class QuotationPage extends Page implements HasTable
                             $converter = app(QuotationSaleConverter::class);
                             $sale = $converter->convert($record);
 
-                            $this->dispatch('toast', [
+                            $this$this->dispatch('gooey-toast', [
                                 'type' => 'success',
                                 'title' => 'Quotation converted to sale',
                             ]);

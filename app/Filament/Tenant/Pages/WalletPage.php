@@ -113,7 +113,7 @@ class WalletPage extends Page implements HasTable
                             $data['description'] ?: 'Manual deposit by ' . auth()->user()->full_name
                         );
 
-                        $this->dispatch('toast', [
+                        $this$this->dispatch('gooey-toast', [
                             'type' => 'success',
                             'title' => 'Deposit successful',
                             'description' => number_format($data['amount'], 2) . ' UGX deposited for {$record->customer->full_name}',
@@ -147,13 +147,13 @@ class WalletPage extends Page implements HasTable
                                 $data['description'] ?: 'Manual withdrawal by ' . auth()->user()->full_name
                             );
 
-                            $this->dispatch('toast', [
+                            $this$this->dispatch('gooey-toast', [
                                 'type' => 'success',
                                 'title' => 'Withdrawal successful',
                                 'description' => number_format($data['amount'], 2) . ' UGX withdrawn for {$record->customer->full_name}',
                             ]);
                         } catch (\RuntimeException $e) {
-                            $this->dispatch('toast', [
+                            $this$this->dispatch('gooey-toast', [
                                 'type' => 'error',
                                 'title' => 'Withdrawal failed',
                                 'description' => $e->getMessage(),

@@ -279,7 +279,7 @@ class SalesTerminal extends Page
         $inventory = app(\App\Services\InventoryService::class);
 
         if ($product->track_stock && !$inventory->hasEnoughStock($product->id, $branchId, 1)) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'error',
                 'title' => 'Out of stock',
                 'description' => $product->name . ' has no available stock at this branch.',
@@ -413,7 +413,7 @@ class SalesTerminal extends Page
     public function confirmVariantSelection(): void
     {
         if (empty($this->selectedVariantId)) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'warning',
                 'title' => 'No variant selected',
                 'description' => 'Select a variant to add to cart.',
@@ -427,7 +427,7 @@ class SalesTerminal extends Page
             ->find($this->selectedVariantId);
 
         if (! $variant || !$variant->is_active) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'error',
                 'title' => 'Variant not available',
             ]);
@@ -451,7 +451,7 @@ class SalesTerminal extends Page
         $branchStock = $branchId ? $inventory->getProductStock($variant->product_id, $branchId, $variant->id) : (float) $variant->available_stock;
 
         if ($variant->track_stock && $branchStock <= 0) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'error',
                 'title' => 'Out of stock',
                 'description' => $variant->name . ' has no available stock at this branch.',
@@ -531,7 +531,7 @@ class SalesTerminal extends Page
         $nextQuantity = ((float) $item['quantity']) + 1;
 
         if ($item['track_stock'] && $nextQuantity > (float) $item['stock']) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'warning',
                 'title' => 'Stock limit reached',
                 'description' => 'Only ' . number_format((float) $item['stock'], 2) . ' units available.',
@@ -613,7 +613,7 @@ class SalesTerminal extends Page
     public function confirmSerialSelection(): void
     {
         if (empty($this->serialModalSelected)) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'warning',
                 'title' => 'No serial selected',
                 'description' => 'Select at least one serial number.',
@@ -644,7 +644,7 @@ class SalesTerminal extends Page
             $serial = $serials->get($serialId);
 
             if (! $serial) {
-                $this->dispatch('toast', [
+                $this$this->dispatch('gooey-toast', [
                     'type' => 'error',
                     'title' => 'Serial unavailable',
                     'description' => $serial?->serial_number . ' is no longer available.',
@@ -766,7 +766,7 @@ class SalesTerminal extends Page
     public function openPaymentModal(): void
     {
         if (empty($this->cart)) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'warning',
                 'title' => 'Cart is empty',
                 'description' => 'Add at least one product before payment.',
@@ -797,7 +797,7 @@ class SalesTerminal extends Page
             if (! $cust) return;
             $walletBalance = app(\App\Services\CustomerWalletService::class)->getBalance(auth()->user()->tenant_id, $cust->id);
             if ($walletBalance <= 0) {
-                $this->dispatch('toast', [
+                $this$this->dispatch('gooey-toast', [
                     'type' => 'warning',
                     'title' => 'No wallet balance',
                     'description' => 'This customer has no wallet funds.',
@@ -879,7 +879,7 @@ class SalesTerminal extends Page
         $name = trim($this->newCustomerName);
 
         if ($name === '') {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'warning',
                 'title' => 'Customer name is required',
             ]);
@@ -890,7 +890,7 @@ class SalesTerminal extends Page
         $tenantId = auth()->user()?->tenant_id;
 
         if (! $tenantId) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'error',
                 'title' => 'Unable to add customer',
                 'description' => 'No authenticated tenant was found.',
@@ -924,7 +924,7 @@ class SalesTerminal extends Page
         $this->customerId = $customerId;
         $this->showAddCustomerModal = false;
 
-        $this->dispatch('toast', [
+        $this$this->dispatch('gooey-toast', [
             'type' => 'success',
             'title' => 'Customer added',
             'description' => $name . ' was added and selected.',
@@ -934,7 +934,7 @@ class SalesTerminal extends Page
     public function holdOrder(): void
     {
         if (empty($this->cart)) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'warning',
                 'title' => 'Cart is empty',
                 'description' => 'Add at least one product before holding.',
@@ -947,7 +947,7 @@ class SalesTerminal extends Page
         $userId = auth()->id();
 
         if (! $tenantId || ! $userId) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'error',
                 'title' => 'Unable to hold order',
                 'description' => 'No authenticated tenant/user was found.',
@@ -1042,13 +1042,13 @@ class SalesTerminal extends Page
         $this->showOrdersModal = false;
         $this->renderKey++;
 
-        $this->dispatch('toast', [
+        $this$this->dispatch('gooey-toast', [
                 'type' => 'success',
                 'title' => 'Order held',
                 'description' => 'The current order was saved and can be resumed later.',
             ]);
         } catch (\Throwable $exception) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'error',
                 'title' => 'Could not hold order',
                 'description' => $exception->getMessage(),
@@ -1061,7 +1061,7 @@ class SalesTerminal extends Page
         $held = Transaction::query()->where('id', $transactionId)->where('status', 'on_hold')->first();
 
         if (! $held) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'error',
                 'title' => 'Unpaid order not found',
             ]);
@@ -1116,7 +1116,7 @@ class SalesTerminal extends Page
 
         $this->showOrdersModal = false;
 
-        $this->dispatch('toast', [
+        $this$this->dispatch('gooey-toast', [
             'type' => 'success',
             'title' => 'Order resumed',
             'description' => $held->receipt_number . ' was restored to the cart.',
@@ -1128,7 +1128,7 @@ class SalesTerminal extends Page
         $held = Transaction::query()->where('id', $transactionId)->where('status', 'on_hold')->first();
 
         if (! $held) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'error',
                 'title' => 'Held order not found',
             ]);
@@ -1142,7 +1142,7 @@ class SalesTerminal extends Page
             ->where('transaction_id', $held->id)
             ->update(['is_deleted' => true]);
 
-        $this->dispatch('toast', [
+        $this$this->dispatch('gooey-toast', [
             'type' => 'error',
             'title' => 'Held order voided',
             'description' => $held->receipt_number . ' was voided.',
@@ -1169,7 +1169,7 @@ class SalesTerminal extends Page
             ->first();
 
         if (! $order) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'error',
                 'title' => 'Held order not found',
             ]);
@@ -1178,7 +1178,7 @@ class SalesTerminal extends Page
         }
 
         if ($order->customer_id && ! (bool) (auth()->user()?->hasPermission('can_settle_credit_payments') ?? false)) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'error',
                 'title' => 'Permission required',
                 'description' => 'You need the Credit Payments permission to settle unpaid orders.',
@@ -1190,7 +1190,7 @@ class SalesTerminal extends Page
         $due = max(0, (float) $order->total_amount - (float) $order->amount_paid);
 
         if ($due <= 0) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'warning',
                 'title' => 'No balance due',
                 'description' => 'This order is already fully paid.',
@@ -1202,7 +1202,7 @@ class SalesTerminal extends Page
         $collectAmount = $amount !== null ? (float) $amount : $due;
 
         if ($collectAmount <= 0 || $collectAmount > $due) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'warning',
                 'title' => 'Invalid amount',
                 'description' => 'Enter an amount between 1 and ' . number_format($due, 0) . '.',
@@ -1285,7 +1285,7 @@ class SalesTerminal extends Page
                 }
             });
         } catch (\Throwable $exception) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'error',
                 'title' => 'Payment failed',
                 'description' => $exception->getMessage(),
@@ -1297,7 +1297,7 @@ class SalesTerminal extends Page
         $this->showOrdersModal = false;
         $this->renderKey++;
 
-        $this->dispatch('toast', [
+        $this$this->dispatch('gooey-toast', [
             'type' => 'success',
             'title' => 'Payment collected',
             'description' => $order->receipt_number . ' now has ' . number_format(max(0, (float) $order->balance_due - $collectAmount), 0) . ' remaining.',
@@ -1503,7 +1503,7 @@ class SalesTerminal extends Page
     public function checkout(): void
     {
         if (empty($this->cart)) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'warning',
                 'title' => 'Cart is empty',
                 'description' => 'Add at least one product before checkout.',
@@ -1516,7 +1516,7 @@ class SalesTerminal extends Page
         $userId = auth()->id();
 
         if (! $tenantId || ! $userId) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'error',
                 'title' => 'Unable to checkout',
                 'description' => 'No authenticated tenant/user was found.',
@@ -1535,7 +1535,7 @@ class SalesTerminal extends Page
 
         if ($this->paymentType !== 'cash') {
             if (! $customer) {
-                $this->dispatch('toast', [
+                $this$this->dispatch('gooey-toast', [
                     'type' => 'warning',
                     'title' => 'Customer required',
                     'description' => 'A customer is required for credit and layaway sales.',
@@ -1545,7 +1545,7 @@ class SalesTerminal extends Page
             }
 
             if ($this->paymentType === 'credit' && ! $customer->credit_enabled) {
-                $this->dispatch('toast', [
+                $this$this->dispatch('gooey-toast', [
                     'type' => 'warning',
                     'title' => 'Credit is not enabled',
                     'description' => 'This customer is not allowed to buy on credit.',
@@ -1883,7 +1883,7 @@ class SalesTerminal extends Page
             $this->showReceiptModal = true;
             $this->renderKey++;
 
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'success',
                 'title' => 'Sale completed',
                 'description' => 'Receipt ' . $receiptNumber . ' was saved successfully.',
@@ -1893,7 +1893,7 @@ class SalesTerminal extends Page
                 ],
             ]);
         } catch (\Throwable $exception) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'error',
                 'title' => 'Checkout failed',
                 'description' => $exception->getMessage(),
@@ -1922,7 +1922,7 @@ class SalesTerminal extends Page
         $amount = (float) $this->cashAmount;
 
         if ($amount <= 0) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'warning',
                 'title' => 'Invalid amount',
                 'description' => 'Enter an amount greater than zero.',
@@ -1969,13 +1969,13 @@ class SalesTerminal extends Page
             $this->cashReason = '';
             $this->renderKey++;
 
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'success',
                 'title' => $this->cashMovementType === 'cash_in' ? 'Cash In recorded' : 'Cash Out recorded',
                 'description' => number_format($amount, 0) . ' recorded successfully.',
             ]);
         } catch (\Throwable $e) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'error',
                 'title' => 'Failed',
                 'description' => $e->getMessage(),
@@ -2037,13 +2037,13 @@ class SalesTerminal extends Page
             $this->zActualCash = '';
             $this->zNote = '';
 
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'success',
                 'title' => 'Z Report generated',
                 'description' => $shortage > 0 ? 'Session closed. Overage: ' . number_format($shortage) . '.' : ($shortage < 0 ? 'Session closed. Shortage: ' . number_format(abs($shortage)) . '.' : 'Session closed. Register balanced.'),
             ]);
         } catch (\Throwable $e) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'error',
                 'title' => 'Failed to close session',
                 'description' => $e->getMessage(),

@@ -106,7 +106,7 @@ class OnlineStoreSettingsPage extends Page
             ],
         ]);
 
-        $this->dispatch('toast', [
+        $this$this->dispatch('gooey-toast', [
             'type' => 'success',
             'title' => 'Online Store Settings',
             'description' => 'Settings saved successfully.',

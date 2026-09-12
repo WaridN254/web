@@ -102,7 +102,7 @@ class BusinessManagementPage extends Page
         ]);
 
         if ($validator->fails()) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'error',
                 'title' => 'Validation Error',
                 'description' => collect($validator->errors()->all())->take(3)->implode("\n"),
@@ -129,7 +129,7 @@ class BusinessManagementPage extends Page
             $tenant->save();
         }
 
-        $this->dispatch('toast', [
+        $this$this->dispatch('gooey-toast', [
             'type' => 'success',
             'title' => 'Business Updated',
             'description' => 'Your business account details have been saved.',

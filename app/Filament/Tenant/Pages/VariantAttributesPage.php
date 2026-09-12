@@ -133,7 +133,7 @@ class VariantAttributesPage extends Page implements HasTable
                     ->action(function (VariantAttribute $record) {
                         $record->values()->delete();
                         $record->delete();
-                        $this->dispatch('toast', [
+                        $this$this->dispatch('gooey-toast', [
                             'type' => 'success',
                             'title' => 'Attribute deleted',
                         ]);
@@ -169,7 +169,7 @@ class VariantAttributesPage extends Page implements HasTable
         $tenantId = auth()->user()?->tenant_id;
 
         if (empty($this->attributeName)) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'error',
                 'title' => 'Attribute name is required',
             ]);
@@ -181,7 +181,7 @@ class VariantAttributesPage extends Page implements HasTable
             ->exists();
 
         if ($exists) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'error',
                 'title' => 'Attribute already exists',
             ]);
@@ -208,7 +208,7 @@ class VariantAttributesPage extends Page implements HasTable
 
         $this->closeModals();
 
-        $this->dispatch('toast', [
+        $this$this->dispatch('gooey-toast', [
             'type' => 'success',
             'title' => 'Attribute created successfully',
         ]);
@@ -219,7 +219,7 @@ class VariantAttributesPage extends Page implements HasTable
         $tenantId = auth()->user()?->tenant_id;
 
         if (empty($this->editAttributeName)) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'error',
                 'title' => 'Attribute name is required',
             ]);
@@ -232,7 +232,7 @@ class VariantAttributesPage extends Page implements HasTable
             ->exists();
 
         if ($exists) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'error',
                 'title' => 'Attribute name already exists',
             ]);
@@ -267,7 +267,7 @@ class VariantAttributesPage extends Page implements HasTable
 
         $this->closeModals();
 
-        $this->dispatch('toast', [
+        $this$this->dispatch('gooey-toast', [
             'type' => 'success',
             'title' => 'Attribute updated successfully',
         ]);

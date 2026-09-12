@@ -55,20 +55,20 @@ class ManageTaxAndEfris extends Page
         try {
             // This would call your EFRIS API integration
             // For now, we'll just show a notification
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'info',
                 'title' => 'Connection Test',
                 'description' => 'Testing connection to EFRIS API...',
             ]);
 
             // Simulate successful test
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'success',
                 'title' => 'Success',
                 'description' => 'Connected successfully to EFRIS system.',
             ]);
         } catch (\Exception $e) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'error',
                 'title' => 'Connection Failed',
                 'description' => $e->getMessage(),
@@ -78,7 +78,7 @@ class ManageTaxAndEfris extends Page
 
     public function saveEfrisSettings(): void
     {
-        $this->dispatch('toast', [
+        $this$this->dispatch('gooey-toast', [
             'type' => 'success',
             'title' => 'Saved',
             'description' => 'EFRIS settings have been saved.',
@@ -87,7 +87,7 @@ class ManageTaxAndEfris extends Page
 
     public function retryFailedSubmissions(): void
     {
-        $this->dispatch('toast', [
+        $this$this->dispatch('gooey-toast', [
             'type' => 'info',
             'title' => 'Processing',
             'description' => 'Retrying failed EFRIS submissions...',

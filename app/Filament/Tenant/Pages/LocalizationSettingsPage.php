@@ -74,7 +74,7 @@ class LocalizationSettingsPage extends Page
         $tenant = auth()->user()->tenant;
 
         if (!$tenant) {
-            $this->dispatch('toast', ['type' => 'error', 'title' => 'No tenant found']);
+            $this$this->dispatch('gooey-toast', ['type' => 'error', 'title' => 'No tenant found']);
             return;
         }
 
@@ -90,7 +90,7 @@ class LocalizationSettingsPage extends Page
         app(LocalizationService::class)->setLocale($this->default_language);
         app(CurrencyService::class)->clearCache();
 
-        $this->dispatch('toast', ['type' => 'success', 'title' => 'Localization settings saved']);
+        $this$this->dispatch('gooey-toast', ['type' => 'success', 'title' => 'Localization settings saved']);
     }
 
     public function updatedDefaultLanguage(): void

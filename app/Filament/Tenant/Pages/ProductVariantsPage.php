@@ -207,7 +207,7 @@ class ProductVariantsPage extends Page implements HasTable
         $this->closeEditModal();
         $this->closeVariantsModal();
 
-        $this->dispatch('toast', [
+        $this$this->dispatch('gooey-toast', [
             'type' => 'success',
             'title' => 'Variant updated successfully',
         ]);
@@ -217,7 +217,7 @@ class ProductVariantsPage extends Page implements HasTable
     {
         ProductVariant::where('id', $variantId)->update(['is_active' => false]);
 
-        $this->dispatch('toast', [
+        $this$this->dispatch('gooey-toast', [
             'type' => 'success',
             'title' => 'Variant deactivated',
         ]);

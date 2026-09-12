@@ -33,7 +33,7 @@ class SalesReturnPage extends Page implements HasTable
         if (!$product) return;
 
         $this->selectedProductId = $productId;
-        $this->dispatch('toast', ['type' => 'info', 'title' => 'Product selected for return', 'description' => $product->name]);
+        $this$this->dispatch('gooey-toast', ['type' => 'info', 'title' => 'Product selected for return', 'description' => $product->name]);
     }
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-arrow-uturn-left';

@@ -87,7 +87,7 @@ class AccountManagementPage extends Page
         }
 
         if ($validator->fails()) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'error',
                 'title' => 'Validation Error',
                 'description' => collect($validator->errors()->all())->take(3)->implode("\n"),
@@ -109,7 +109,7 @@ class AccountManagementPage extends Page
         $this->new_password = '';
         $this->new_password_confirmation = '';
 
-        $this->dispatch('toast', [
+        $this$this->dispatch('gooey-toast', [
             'type' => 'success',
             'title' => 'Account Updated',
             'description' => 'Your account details have been saved.',

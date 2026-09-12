@@ -19,7 +19,7 @@ class EditUnitMeasure extends EditRecord
 
     protected function getSavedNotification(): ?\Filament\Notifications\Notification
     {
-        $this->dispatch('toast', ['type' => 'success', 'title' => 'Saved successfully']);
+        $this$this->dispatch('gooey-toast', ['type' => 'success', 'title' => 'Saved successfully']);
         return null;
     }
 }

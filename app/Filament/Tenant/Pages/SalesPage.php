@@ -187,18 +187,18 @@ class SalesPage extends Page implements HasTable
         $selectedItems = collect($this->refundItems)->where('selected', true);
 
         if ($selectedItems->isEmpty()) {
-            $this->dispatch('toast', ['type' => 'warning', 'title' => 'No items selected']);
+            $this$this->dispatch('gooey-toast', ['type' => 'warning', 'title' => 'No items selected']);
             return;
         }
 
         if ($this->refundTotal <= 0) {
-            $this->dispatch('toast', ['type' => 'warning', 'title' => 'Invalid refund amount']);
+            $this$this->dispatch('gooey-toast', ['type' => 'warning', 'title' => 'Invalid refund amount']);
             return;
         }
 
         $sale = DB::table('transactions')->where('id', $this->refundSaleId)->first();
         if (!$sale) {
-            $this->dispatch('toast', ['type' => 'error', 'title' => 'Sale not found']);
+            $this$this->dispatch('gooey-toast', ['type' => 'error', 'title' => 'Sale not found']);
             return;
         }
 
@@ -392,13 +392,13 @@ class SalesPage extends Page implements HasTable
             ];
             $this->showReceiptModal = true;
 
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'success',
                 'title' => 'Refund processed',
                 'description' => $this->currency() . ' ' . number_format($this->refundTotal, 0) . ' refunded.',
             ]);
         } catch (\Throwable $e) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'error',
                 'title' => 'Refund failed',
                 'description' => $e->getMessage(),
@@ -723,7 +723,7 @@ class SalesPage extends Page implements HasTable
                             $due = max(0, (float) $record->total_amount - (float) $record->amount_paid);
 
                             if ($amount <= 0 || $amount > $due) {
-                                $this->dispatch('toast', [
+                                $this$this->dispatch('gooey-toast', [
                                     'type' => 'warning',
                                     'title' => 'Invalid amount',
                                     'description' => 'Enter an amount between 1 and ' . number_format($due, 0) . '.',
@@ -823,7 +823,7 @@ class SalesPage extends Page implements HasTable
                                     }
                                 });
                             } catch (\Throwable $exception) {
-                                $this->dispatch('toast', [
+                                $this$this->dispatch('gooey-toast', [
                                     'type' => 'error',
                                     'title' => 'Payment failed',
                                     'description' => $exception->getMessage(),
@@ -832,7 +832,7 @@ class SalesPage extends Page implements HasTable
                                 return;
                             }
 
-                            $this->dispatch('toast', [
+                            $this$this->dispatch('gooey-toast', [
                                 'type' => 'success',
                                 'title' => 'Payment recorded',
                                 'description' => $reference . ' — ' . number_format($amount, 0) . ' received.',
@@ -895,7 +895,7 @@ class SalesPage extends Page implements HasTable
                         ->action(function ($record) {
                             $record->update(['is_deleted' => true]);
 
-                            $this->dispatch('toast', ['type' => 'error', 'title' => 'Sale deleted']);
+                            $this$this->dispatch('gooey-toast', ['type' => 'error', 'title' => 'Sale deleted']);
                         }),
                 ])
                     ->label('Actions')

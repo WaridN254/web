@@ -264,7 +264,7 @@ class CustomerLedger extends Page
     public function openPaymentModal(): void
     {
         if (! $this->canSettlePayments()) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'error',
                 'title' => 'Permission required',
                 'description' => 'You need the Credit Payments permission to record payments.',
@@ -276,7 +276,7 @@ class CustomerLedger extends Page
         $invoices = $this->openInvoices();
 
         if (empty($invoices)) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'warning',
                 'title' => 'No open invoices',
                 'description' => 'This customer has no outstanding balance to collect.',
@@ -351,7 +351,7 @@ class CustomerLedger extends Page
         }
 
         if (! $this->canSettlePayments()) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'error',
                 'title' => 'Permission required',
                 'description' => 'You need the Credit Payments permission to record payments.',
@@ -361,7 +361,7 @@ class CustomerLedger extends Page
         }
 
         if (! $this->selectedCustomerId || ! $this->paymentInvoiceId) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'warning',
                 'title' => 'Select an invoice',
                 'description' => 'Choose an open invoice to receive payment against.',
@@ -377,7 +377,7 @@ class CustomerLedger extends Page
             ->first();
 
         if (! $order) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'error',
                 'title' => 'Invoice not found',
             ]);
@@ -389,7 +389,7 @@ class CustomerLedger extends Page
         $amount = (float) ($this->paymentAmount ?? 0);
 
         if ($amount <= 0 || $amount > $due) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'warning',
                 'title' => 'Invalid amount',
                 'description' => 'Enter an amount between 1 and ' . number_format($due, 0) . '.',
@@ -484,7 +484,7 @@ class CustomerLedger extends Page
                 ];
             });
         } catch (\Throwable $exception) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'error',
                 'title' => 'Payment failed',
                 'description' => $exception->getMessage(),
@@ -498,7 +498,7 @@ class CustomerLedger extends Page
         $this->showPaymentReceipt = true;
         $this->renderKey++;
 
-        $this->dispatch('toast', [
+        $this$this->dispatch('gooey-toast', [
             'type' => 'success',
             'title' => 'Payment recorded',
             'description' => $reference . ' — ' . number_format($amount, 0) . ' received.',

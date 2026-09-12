@@ -41,7 +41,7 @@ trait DispatchesToasts
         array $params = [],
         ?string $description = null,
     ): void {
-        $this->dispatch('toast', [
+        $this$this->dispatch('gooey-toast', [
             'type' => 'success',
             'title' => $title,
             'description' => $description,
@@ -61,7 +61,7 @@ trait DispatchesToasts
         ?string $description = null,
         ?int $duration = null,
     ): void {
-        $this->dispatch('toast', [
+        $this$this->dispatch('gooey-toast', [
             'type' => 'success',
             'title' => $title,
             'description' => $description,
@@ -80,7 +80,7 @@ trait DispatchesToasts
         ?string $description = null,
         ?int $duration = null,
     ): void {
-        $this->dispatch('toast', [
+        $this$this->dispatch('gooey-toast', [
             'type' => 'success',
             'title' => $title,
             'description' => $description,
@@ -97,6 +97,6 @@ trait DispatchesToasts
         $payload = ['type' => $type, 'title' => $title];
         if ($description !== null) $payload['description'] = $description;
         if ($duration !== null) $payload['duration'] = $duration;
-        $this->dispatch('toast', $payload);
+        $this$this->dispatch('gooey-toast', $payload);
     }
 }

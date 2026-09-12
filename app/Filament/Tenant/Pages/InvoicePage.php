@@ -164,7 +164,7 @@ class InvoicePage extends Page
         if ($tx) {
             $tx->update(['is_deleted' => true]);
 
-            $this->dispatch('toast', ['type' => 'error', 'title' => 'Invoice deleted']);
+            $this$this->dispatch('gooey-toast', ['type' => 'error', 'title' => 'Invoice deleted']);
         }
     }
 }

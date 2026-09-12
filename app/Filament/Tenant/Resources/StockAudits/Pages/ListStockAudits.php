@@ -32,7 +32,7 @@ class ListStockAudits extends ListRecords
                         ->first();
                         
                     if ($activeAudit) {
-                        $this->dispatch('toast', ['type' => 'error', 'title' => 'An audit is already active']);
+                        $this$this->dispatch('gooey-toast', ['type' => 'error', 'title' => 'An audit is already active']);
                         return redirect(\App\Filament\Tenant\Resources\StockAudits\StockAuditResource::getUrl('edit', ['record' => $activeAudit->id]));
                     }
 

@@ -126,7 +126,7 @@ class LoyaltyPage extends Page implements HasTable
                             $data['description'] ?: 'Manual earn by ' . auth()->user()->full_name
                         );
 
-                        $this->dispatch('toast', [
+                        $this$this->dispatch('gooey-toast', [
                             'type' => 'success',
                             'title' => 'Points earned',
                             'description' => "{$data['points']} points added to {$record->customer->full_name}",
@@ -159,13 +159,13 @@ class LoyaltyPage extends Page implements HasTable
                                 $data['description'] ?: 'Manual redemption by ' . auth()->user()->full_name
                             );
 
-                            $this->dispatch('toast', [
+                            $this$this->dispatch('gooey-toast', [
                                 'type' => 'success',
                                 'title' => 'Points redeemed',
                                 'description' => "{$data['points']} points redeemed for {$record->customer->full_name}",
                             ]);
                         } catch (\RuntimeException $e) {
-                            $this->dispatch('toast', [
+                            $this$this->dispatch('gooey-toast', [
                                 'type' => 'error',
                                 'title' => 'Redemption failed',
                                 'description' => $e->getMessage(),

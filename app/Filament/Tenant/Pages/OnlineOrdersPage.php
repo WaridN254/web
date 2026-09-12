@@ -148,7 +148,7 @@ class OnlineOrdersPage extends Page
             app(OnlineOrderService::class)
                 ->updateStatus($order, $this->newStatus, 'Updated by ' . (auth()->user()->full_name ?? 'Admin'));
 
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'success',
                 'title' => 'Order Updated',
                 'description' => "Order {$order->order_number} marked as {$this->newStatus}.",
@@ -158,7 +158,7 @@ class OnlineOrdersPage extends Page
             $this->loadOrders();
             $this->closeOrder();
         } catch (\Exception $e) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'error',
                 'title' => 'Error',
                 'description' => $e->getMessage(),
@@ -179,7 +179,7 @@ class OnlineOrdersPage extends Page
             app(OnlineOrderService::class)
                 ->updateStatus($order, 'cancelled', 'Cancelled by ' . (auth()->user()->full_name ?? 'Admin'));
 
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'success',
                 'title' => 'Order Cancelled',
                 'description' => "Order {$order->order_number} has been cancelled.",
@@ -189,7 +189,7 @@ class OnlineOrdersPage extends Page
             $this->loadOrders();
             $this->closeOrder();
         } catch (\Exception $e) {
-            $this->dispatch('toast', [
+            $this$this->dispatch('gooey-toast', [
                 'type' => 'error',
                 'title' => 'Error',
                 'description' => $e->getMessage(),

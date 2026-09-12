@@ -22,7 +22,7 @@ class CreatePurchaseOrder extends CreateRecord
 
     protected function getCreatedNotification(): ?\Filament\Notifications\Notification
     {
-        $this->dispatch('toast', ['type' => 'success', 'title' => 'Created successfully']);
+        $this$this->dispatch('gooey-toast', ['type' => 'success', 'title' => 'Created successfully']);
         return null;
     }
 }

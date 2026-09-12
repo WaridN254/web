@@ -56,7 +56,7 @@ class UserPreferencesPage extends Page
 
         app(LocalizationService::class)->setLocale($this->language);
 
-        $this->dispatch('toast', ['type' => 'success', 'title' => 'Preferences saved']);
+        $this$this->dispatch('gooey-toast', ['type' => 'success', 'title' => 'Preferences saved']);
     }
 
     private function getTimezones(): array

@@ -57,13 +57,13 @@ class ExchangeRatesPage extends Page
     public function saveRate(): void
     {
         if (!$this->base_currency || !$this->target_currency || !$this->rate_value) {
-            $this->dispatch('toast', ['type' => 'warning', 'title' => 'Please fill all fields']);
+            $this$this->dispatch('gooey-toast', ['type' => 'warning', 'title' => 'Please fill all fields']);
             return;
         }
 
         $rate = (float) $this->rate_value;
         if ($rate <= 0) {
-            $this->dispatch('toast', ['type' => 'warning', 'title' => 'Rate must be greater than 0']);
+            $this$this->dispatch('gooey-toast', ['type' => 'warning', 'title' => 'Rate must be greater than 0']);
             return;
         }
 
@@ -80,7 +80,7 @@ class ExchangeRatesPage extends Page
         $this->editingId = null;
         $this->loadRates();
 
-        $this->dispatch('toast', ['type' => 'success', 'title' => 'Exchange rate saved']);
+        $this$this->dispatch('gooey-toast', ['type' => 'success', 'title' => 'Exchange rate saved']);
     }
 
     public function editRate(string $id): void
@@ -105,6 +105,6 @@ class ExchangeRatesPage extends Page
     {
         ExchangeRate::find($id)?->delete();
         $this->loadRates();
-        $this->dispatch('toast', ['type' => 'success', 'title' => 'Exchange rate deleted']);
+        $this$this->dispatch('gooey-toast', ['type' => 'success', 'title' => 'Exchange rate deleted']);
     }
 }

@@ -6,7 +6,7 @@
         function registerToastListener() {
             if (!window.Livewire) return false;
 
-            Livewire.on('toast', function (data) {
+            Livewire.on('gooey-toast', function (data) {
                 if (Array.isArray(data)) data = data[0];
                 if (!data) return;
 
