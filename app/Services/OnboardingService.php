@@ -165,7 +165,7 @@ class OnboardingService
             'status' => 'active',
             'billing_cycle' => 'monthly',
             'price' => 0,
-            'currency' => $plan->currency,
+            'currency' => $plan->currency ?? 'USD',
             'starts_at' => now(),
             'ends_at' => null,
         ]);
