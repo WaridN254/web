@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Business;
 use App\Models\Tenant;
-use App\Services\EmailService;
+use App\Services\ActivationTokenService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\RateLimiter;
@@ -14,7 +14,7 @@ use Illuminate\Validation\ValidationException;
 class RegistrationController extends Controller
 {
     public function __construct(
-        private EmailService $emailService,
+        private ActivationTokenService $tokenService,
     ) {}
 
     public function showForm()
@@ -91,16 +91,13 @@ class RegistrationController extends Controller
             $tenantId = $tenant->id;
         });
 
-        $this->emailService->queueActivationEmail(
+        $plainToken = $this->tokenService->create(
             $tenantId,
             $email,
             null,
-            $businessName,
         );
 
-        return redirect()->route('registration.sent')
-            ->with('email', $email)
-            ->with('business_name', $businessName);
+        return redirect()->route('activation.show', $plainToken);
     }
 
     public function sent()
