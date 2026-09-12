@@ -83,8 +83,7 @@ class AccountActivationController extends Controller
         DB::transaction(function () use ($request, $activation) {
             $tenant = $activation->tenant;
             $ownerRole = \App\Models\Role::firstOrCreate(
-                ['name' => 'owner'],
-                ['description' => 'Business owner']
+                ['name' => 'owner']
             );
 
             $user = User::create([
