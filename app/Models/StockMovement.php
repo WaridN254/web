@@ -60,27 +60,47 @@ class StockMovement extends Model
                 }
 
                 if ($delta !== 0) {
-                    $bs = \App\Models\BranchStock::firstOrCreate(
-                        [
+                    $existing = \App\Models\BranchStock::where([
+                        'tenant_id' => $movement->tenant_id,
+                        'branch_id' => $movement->branch_id,
+                        'product_id' => $movement->product_id,
+                        'variant_id' => $movement->variant_id,
+                    ])->first();
+
+                    if ($existing) {
+                        $existing->quantity += $delta;
+                        $existing->save();
+                    } else {
+                        $product = Product::find($movement->product_id);
+                        \App\Models\BranchStock::create([
                             'tenant_id' => $movement->tenant_id,
                             'branch_id' => $movement->branch_id,
                             'product_id' => $movement->product_id,
                             'variant_id' => $movement->variant_id,
-                        ],
-                        ['quantity' => 0]
-                    );
-                    $bs->quantity += $delta;
-                    $bs->save();
+                            'quantity' => ($product?->current_stock ?? 0) + $delta,
+                        ]);
+                    }
+
+                    Product::where('id', $movement->product_id)
+                        ->update(['current_stock' => DB::raw("current_stock + ($delta)")]);
                 } else {
-                    \App\Models\BranchStock::firstOrCreate(
-                        [
+                    $existing = \App\Models\BranchStock::where([
+                        'tenant_id' => $movement->tenant_id,
+                        'branch_id' => $movement->branch_id,
+                        'product_id' => $movement->product_id,
+                        'variant_id' => $movement->variant_id,
+                    ])->first();
+
+                    if (!$existing) {
+                        $product = Product::find($movement->product_id);
+                        \App\Models\BranchStock::create([
                             'tenant_id' => $movement->tenant_id,
                             'branch_id' => $movement->branch_id,
                             'product_id' => $movement->product_id,
                             'variant_id' => $movement->variant_id,
-                        ],
-                        ['quantity' => 0]
-                    );
+                            'quantity' => $product?->current_stock ?? 0,
+                        ]);
+                    }
                 }
             } else {
                 $product = $movement->product;
