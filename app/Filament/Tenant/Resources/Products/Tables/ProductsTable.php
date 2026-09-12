@@ -45,7 +45,19 @@ class ProductsTable
                     ->label('Unit')
                     ->placeholder('-'),
                 TextColumn::make('current_stock')
-                    ->label('Qty')
+                    ->label(fn () => auth()->user()?->can_view_all_branches ? 'Total Qty' : 'Branch Qty')
+                    ->state(function ($record): float {
+                        $user = auth()->user();
+                        if ($user && $user->can_view_all_branches) {
+                            return (float) ($record->current_stock ?? 0);
+                        }
+                        $branchId = session('active_branch_id');
+                        if (!$branchId) {
+                            return (float) ($record->current_stock ?? 0);
+                        }
+                        return app(\App\Services\InventoryService::class)
+                            ->getProductStock($record->id, $branchId);
+                    })
                     ->numeric()
                     ->sortable(),
             ])

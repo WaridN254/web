@@ -78,6 +78,11 @@ class Product extends Model
         return $this->hasMany(ProductImage::class, 'product_id');
     }
 
+    public function branchStocks(): HasMany
+    {
+        return $this->hasMany(BranchStock::class, 'product_id');
+    }
+
     public function availableSerialCount(): int
     {
         if ($this->has_variants) {

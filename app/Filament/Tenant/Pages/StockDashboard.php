@@ -198,7 +198,19 @@ class StockDashboard extends Page implements HasTable
                     ->label('NAME')
                     ->searchable(),
                 TextColumn::make('stock_quantity')
-                    ->label('QTY')
+                    ->label(fn () => auth()->user()?->can_view_all_branches ? 'TOTAL QTY' : 'BRANCH QTY')
+                    ->state(function (Product $record): float {
+                        $user = auth()->user();
+                        if ($user && $user->can_view_all_branches) {
+                            return (float) ($record->current_stock ?? 0);
+                        }
+                        $branchId = session('active_branch_id');
+                        if (!$branchId) {
+                            return (float) ($record->current_stock ?? 0);
+                        }
+                        return app(\App\Services\InventoryService::class)
+                            ->getProductStock($record->id, $branchId);
+                    })
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('unit')
@@ -216,34 +228,90 @@ class StockDashboard extends Page implements HasTable
                 TextColumn::make('total_cost')
                     ->label('TOTAL COST')
                     ->state(function (Product $record): float {
-                        return floatval($record->stock_quantity) * floatval($record->cost_price);
+                        $user = auth()->user();
+                        if ($user && $user->can_view_all_branches) {
+                            $qty = (float) ($record->current_stock ?? 0);
+                        } else {
+                            $branchId = session('active_branch_id');
+                            $qty = $branchId
+                                ? app(\App\Services\InventoryService::class)->getProductStock($record->id, $branchId)
+                                : (float) ($record->current_stock ?? 0);
+                        }
+                        return $qty * floatval($record->cost_price);
                     })
                     ->money('UGX'),
                 TextColumn::make('total_value')
                     ->label('TOTAL VALUE')
                     ->state(function (Product $record): float {
-                        return floatval($record->stock_quantity) * floatval($record->billing_price);
+                        $user = auth()->user();
+                        if ($user && $user->can_view_all_branches) {
+                            $qty = (float) ($record->current_stock ?? 0);
+                        } else {
+                            $branchId = session('active_branch_id');
+                            $qty = $branchId
+                                ? app(\App\Services\InventoryService::class)->getProductStock($record->id, $branchId)
+                                : (float) ($record->current_stock ?? 0);
+                        }
+                        return $qty * floatval($record->billing_price);
                     })
                     ->money('UGX'),
             ])
             ->filters([
                 Filter::make('negative_quantity')
                     ->label('Negative quantity')
-                    ->query(fn (Builder $query): Builder => $query->where('current_stock', '<', 0)->where('track_serial_numbers', false)),
+                    ->query(function (Builder $query) {
+                        $user = auth()->user();
+                        if ($user && $user->can_view_all_branches) {
+                            return $query->where('current_stock', '<', 0)->where('track_serial_numbers', false);
+                        }
+                        $branchId = session('active_branch_id');
+                        if ($branchId) {
+                            return $query->whereHas('branchStocks', fn ($q) => $q->where('branch_id', $branchId)->where('quantity', '<', 0));
+                        }
+                        return $query->where('current_stock', '<', 0)->where('track_serial_numbers', false);
+                    }),
                 Filter::make('non_zero_quantity')
                     ->label('Non zero quantity')
-                    ->query(fn (Builder $query): Builder => $query->where(function ($q) {
-                        $q->where('current_stock', '!=', 0)->where('track_serial_numbers', false);
-                    })->orWhere(function ($q) {
-                        $q->where('track_serial_numbers', true)->whereHas('serials', fn ($sq) => $sq->where('status', 'available'));
-                    })),
+                    ->query(function (Builder $query) {
+                        $user = auth()->user();
+                        if ($user && $user->can_view_all_branches) {
+                            return $query->where(function ($q) {
+                                $q->where('current_stock', '!=', 0)->where('track_serial_numbers', false);
+                            })->orWhere(function ($q) {
+                                $q->where('track_serial_numbers', true)->whereHas('serials', fn ($sq) => $sq->where('status', 'available'));
+                            });
+                        }
+                        $branchId = session('active_branch_id');
+                        if ($branchId) {
+                            return $query->where(function ($q) use ($branchId) {
+                                $q->whereHas('branchStocks', fn ($bs) => $bs->where('branch_id', $branchId)->where('quantity', '!=', 0))->where('track_serial_numbers', false);
+                            })->orWhere(function ($q) {
+                                $q->where('track_serial_numbers', true)->whereHas('serials', fn ($sq) => $sq->where('status', 'available'));
+                            });
+                        }
+                        return $query->where('current_stock', '!=', 0)->where('track_serial_numbers', false);
+                    }),
                 Filter::make('zero_quantity')
                     ->label('Zero quantity')
-                    ->query(fn (Builder $query): Builder => $query->where(function ($q) {
-                        $q->where('current_stock', 0)->where('track_serial_numbers', false);
-                    })->orWhere(function ($q) {
-                        $q->where('track_serial_numbers', true)->whereDoesntHave('serials', fn ($sq) => $sq->where('status', 'available'));
-                    })),
+                    ->query(function (Builder $query) {
+                        $user = auth()->user();
+                        if ($user && $user->can_view_all_branches) {
+                            return $query->where(function ($q) {
+                                $q->where('current_stock', 0)->where('track_serial_numbers', false);
+                            })->orWhere(function ($q) {
+                                $q->where('track_serial_numbers', true)->whereDoesntHave('serials', fn ($sq) => $sq->where('status', 'available'));
+                            });
+                        }
+                        $branchId = session('active_branch_id');
+                        if ($branchId) {
+                            return $query->where(function ($q) use ($branchId) {
+                                $q->whereDoesntHave('branchStocks', fn ($bs) => $bs->where('branch_id', $branchId)->where('quantity', '!=', 0))->where('track_serial_numbers', false);
+                            })->orWhere(function ($q) {
+                                $q->where('track_serial_numbers', true)->whereDoesntHave('serials', fn ($sq) => $sq->where('status', 'available'));
+                            });
+                        }
+                        return $query->where('current_stock', 0)->where('track_serial_numbers', false);
+                    }),
                 Filter::make('expiring_soon')
                     ->label('Expiring Soon')
                     ->query(fn (Builder $query): Builder => $query->whereNotNull('expiration_date')->where('expiration_date', '<=', now()->addDays(30))),
