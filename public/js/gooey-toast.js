@@ -1042,7 +1042,6 @@
 
   // Listen on browser custom event (works with Livewire dispatch + Filament)
   document.addEventListener('show-gooey-toast', handleToastEvent);
-  document.addEventListener('toast', handleToastEvent);
 
   // Initialize auto-mount
   if (isBrowser()) {
