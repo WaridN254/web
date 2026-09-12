@@ -34,6 +34,24 @@ class PlatformMailProvider extends ServiceProvider
             return;
         }
 
+        if ($mailer === 'resend') {
+            $apiKey = PlatformSetting::get('mail_api_key', '');
+            if (empty($apiKey)) {
+                $apiKey = config('services.resend.key', '');
+            }
+            config([
+                'mail.default' => 'resend',
+                'services.resend.key' => $apiKey,
+            ]);
+
+            $fromAddress = PlatformSetting::get('mail_from_address', config('mail.from.address'));
+            $fromName = PlatformSetting::get('mail_from_name', config('mail.from.name'));
+            if ($fromAddress) {
+                config(['mail.from' => ['address' => $fromAddress, 'name' => $fromName]]);
+            }
+            return;
+        }
+
         if ($mailer !== 'smtp') {
             return;
         }

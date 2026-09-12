@@ -29,13 +29,14 @@ class PlatformSettingController extends Controller
     {
         $defaults = [
             // Email settings
-            ['key' => 'mail_mailer', 'value' => 'log', 'type' => 'select', 'group' => 'email', 'options' => ['log' => 'Log (Development)', 'smtp' => 'SMTP']],
+            ['key' => 'mail_mailer', 'value' => 'log', 'type' => 'select', 'group' => 'email', 'options' => json_encode(['log' => 'Log (Development)', 'resend' => 'Resend API', 'smtp' => 'SMTP'])],
+            ['key' => 'mail_api_key', 'value' => '', 'type' => 'password', 'group' => 'email'],
             ['key' => 'mail_host', 'value' => '', 'type' => 'text', 'group' => 'email'],
             ['key' => 'mail_port', 'value' => '587', 'type' => 'text', 'group' => 'email'],
             ['key' => 'mail_username', 'value' => '', 'type' => 'text', 'group' => 'email'],
             ['key' => 'mail_password', 'value' => '', 'type' => 'password', 'group' => 'email'],
-            ['key' => 'mail_encryption', 'value' => 'tls', 'type' => 'select', 'group' => 'email', 'options' => ['tls' => 'TLS (port 587)', 'ssl' => 'SSL (port 465)', 'null' => 'None']],
-            ['key' => 'mail_from_address', 'value' => 'no-reply@halis.com', 'type' => 'text', 'group' => 'email'],
+            ['key' => 'mail_encryption', 'value' => 'tls', 'type' => 'select', 'group' => 'email', 'options' => json_encode(['tls' => 'TLS (port 587)', 'ssl' => 'SSL (port 465)', 'null' => 'None'])],
+            ['key' => 'mail_from_address', 'value' => 'onboarding@resend.dev', 'type' => 'text', 'group' => 'email'],
             ['key' => 'mail_from_name', 'value' => 'HALIS', 'type' => 'text', 'group' => 'email'],
             ['key' => 'mail_reply_to_address', 'value' => 'support@halis.com', 'type' => 'text', 'group' => 'email'],
             // General settings

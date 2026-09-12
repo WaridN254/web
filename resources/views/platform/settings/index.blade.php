@@ -73,6 +73,7 @@
                     <div class="form-group">
                         <label class="form-label" style="font-size:.82rem">
                             @if($setting->key === 'mail_mailer') Delivery Method
+                            @elseif($setting->key === 'mail_api_key') API Key (Resend)
                             @elseif($setting->key === 'mail_host') SMTP Host
                             @elseif($setting->key === 'mail_port') SMTP Port
                             @elseif($setting->key === 'mail_username') Username
@@ -105,8 +106,14 @@
                                 placeholder="@if($setting->key === 'mail_host') smtp.gmail.com @elseif($setting->key === 'mail_port') 587 @elseif($setting->key === 'mail_username') your-email@gmail.com @elseif($setting->key === 'mail_from_address') no-reply@halis.com @elseif($setting->key === 'mail_from_name') HALIS @elseif($setting->key === 'mail_reply_to_address') support@halis.com @endif">
                         @endif
 
+                        @if($setting->key === 'mail_api_key')
+                            <div style="font-size:.73rem;color:#64748b;margin-top:5px">
+                                Get your key at <a href="https://resend.com/api-keys" target="_blank" style="color:#6366f1;text-decoration:underline">resend.com/api-keys</a>. Free tier: 100 emails/day.
+                                For testing, Resend provides <strong>onboarding@resend.dev</strong> as default sender.
+                            </div>
+                        @endif
                         @if($setting->key === 'mail_mailer')
-                            <div style="font-size:.73rem;color:#64748b;margin-top:5px"><strong>Log</strong> = dev only · <strong>SMTP</strong> = Gmail, Outlook, Mailgun</div>
+                            <div style="font-size:.73rem;color:#64748b;margin-top:5px"><strong>Resend API</strong> = HTTPS (recommended) · <strong>SMTP</strong> = traditional · <strong>Log</strong> = dev only</div>
                         @endif
                         @if($setting->key === 'mail_host')
                             <div style="font-size:.73rem;color:#64748b;margin-top:5px"><strong>Gmail:</strong> smtp.gmail.com · <strong>Outlook:</strong> smtp-mail.outlook.com</div>
